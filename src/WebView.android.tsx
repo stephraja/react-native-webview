@@ -26,6 +26,7 @@ import {
   WebViewHttpErrorEvent,
   WebViewMessageEvent,
   WebViewNavigationEvent,
+  WebViewOpenWindowEvent,
   WebViewProgressEvent,
   AndroidWebViewProps,
   NativeWebViewAndroid,
@@ -242,6 +243,13 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
     }
   }
 
+  onOpenWindow = (event: WebViewOpenWindowEvent) => {
+    const { onOpenWindow } = this.props;
+    if (onOpenWindow) {
+      onOpenWindow(event);
+    }
+  }
+
   onLoadingFinish = (event: WebViewNavigationEvent) => {
     const { onLoad, onLoadEnd } = this.props;
     const { nativeEvent: { url } } = event;
@@ -365,6 +373,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
         onLoadingStart={this.onLoadingStart}
         onHttpError={this.onHttpError}
         onRenderProcessGone={this.onRenderProcessGone}
+        onOpenWindow={this.onOpenWindow}
         onMessage={this.onMessage}
         onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
         ref={this.webViewRef}
