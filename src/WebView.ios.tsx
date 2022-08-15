@@ -23,6 +23,7 @@ import {
   WebViewNavigationEvent,
   WebViewProgressEvent,
   WebViewTerminatedEvent,
+  WebViewNewWindowEvent,
   IOSWebViewProps,
   DecelerationRateConstant,
   NativeWebViewIOS,
@@ -264,6 +265,13 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     }
   };
 
+  onOpenWindow = (event: WebViewNewWindowEvent) => {
+    const { onOpenWindow } = this.props;
+    if (onOpenWindow) {
+      onOpenWindow(event);
+    }
+  };
+
   componentDidUpdate(prevProps: IOSWebViewProps) {
     this.showRedboxOnPropChanges(prevProps, 'allowsInlineMediaPlayback');
     this.showRedboxOnPropChanges(prevProps, 'incognito');
@@ -348,6 +356,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
         onScroll={this.props.onScroll}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onContentProcessDidTerminate={this.onContentProcessDidTerminate}
+        onOpenWindow={this.onOpenWindow}
         injectedJavaScript={this.props.injectedJavaScript}
         injectedJavaScriptBeforeContentLoaded={this.props.injectedJavaScriptBeforeContentLoaded}
         injectedJavaScriptForMainFrameOnly={injectedJavaScriptForMainFrameOnly}
