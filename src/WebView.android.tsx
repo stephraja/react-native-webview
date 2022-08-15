@@ -374,6 +374,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
         onHttpError={this.onHttpError}
         onRenderProcessGone={this.onRenderProcessGone}
         onOpenWindow={this.onOpenWindow}
+        hasOnOpenWindowEvent={this.props.onOpenWindow !== undefined}
         onMessage={this.onMessage}
         onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
         ref={this.webViewRef}

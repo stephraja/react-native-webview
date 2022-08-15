@@ -288,6 +288,13 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     view.setVerticalScrollBarEnabled(enabled);
   }
 
+  @ReactProp(name = "hasOnOpenWindowEvent")
+  public void setHasOnOpenWindowEvent(WebView view, boolean hasEvent) {
+    if (mWebChromeClient != null) {
+      mWebChromeClient.setHasOnOpenWindowEvent(hasEvent);
+    }
+  }
+
   @ReactProp(name = "cacheEnabled")
   public void setCacheEnabled(WebView view, boolean enabled) {
     if (enabled) {
@@ -1208,6 +1215,8 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
     protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
 
+    protected boolean hasOnOpenWindowEvent = false;
+
     public RNCWebChromeClient(ReactContext reactContext, WebView webView) {
       this.mReactContext = reactContext;
       this.mWebView = webView;
@@ -1218,20 +1227,22 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
       final WebView newWebView = new WebView(view.getContext());
       
-      newWebView.setWebViewClient(new WebViewClient(){
-        @Override
-        public boolean shouldOverrideUrlLoading (WebView subview, String url) {
-          WritableMap event = Arguments.createMap();
-          event.putString("targetUrl", url);
+      if(hasOnOpenWindowEvent) {
+        newWebView.setWebViewClient(new WebViewClient(){
+          @Override
+          public boolean shouldOverrideUrlLoading (WebView subview, String url) {
+            WritableMap event = Arguments.createMap();
+            event.putString("targetUrl", url);
 
-          ((RNCWebView) view).dispatchEvent(
-            view,
-            new TopOpenWindowEvent(view.getId(), event)
-          );
+            ((RNCWebView) view).dispatchEvent(
+              view,
+              new TopOpenWindowEvent(view.getId(), event)
+            );
 
-          return true;
-        }
-      });
+            return true;
+          }
+        });
+      }
 
       final WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
       transport.setWebView(newWebView);
@@ -1476,6 +1487,10 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
     public void setProgressChangedFilter(RNCWebView.ProgressChangedFilter filter) {
       progressChangedFilter = filter;
+    }
+
+    public void setHasOnOpenWindowEvent(boolean hasEvent) {
+      hasOnOpenWindowEvent = hasEvent;
     }
   }
 
