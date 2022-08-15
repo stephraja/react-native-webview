@@ -356,7 +356,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
         onScroll={this.props.onScroll}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onContentProcessDidTerminate={this.onContentProcessDidTerminate}
-        onOpenWindow={this.onOpenWindow}
+        onOpenWindow={this.props.onOpenWindow && this.onOpenWindow}
         injectedJavaScript={this.props.injectedJavaScript}
         injectedJavaScriptBeforeContentLoaded={this.props.injectedJavaScriptBeforeContentLoaded}
         injectedJavaScriptForMainFrameOnly={injectedJavaScriptForMainFrameOnly}
