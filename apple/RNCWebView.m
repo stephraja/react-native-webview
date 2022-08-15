@@ -1163,7 +1163,8 @@ NSString *const CUSTOM_SELECTOR = @"_CUSTOM_SELECTOR_";
       @"url": (request.URL).absoluteString,
       @"mainDocumentURL": (request.mainDocumentURL).absoluteString,
       @"navigationType": navigationTypes[@(navigationType)],
-      @"isTopFrame": @(isTopFrame)
+      @"isTopFrame": @(isTopFrame),
+      @"hasTargetFrame": @(hasTargetFrame),
     }];
     if (![self.delegate webView:self
       shouldStartLoadForRequest:event
