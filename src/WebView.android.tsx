@@ -66,6 +66,7 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
   onHttpError: onHttpErrorProp,
   onRenderProcessGone: onRenderProcessGoneProp,
   onMessage: onMessageProp,
+  onOpenWindow: onOpenWindowProp,
   renderLoading,
   renderError,
   style,
@@ -88,7 +89,7 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
     }
   }, []);
 
-  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onRenderProcessGone } = useWebWiewLogic({
+  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, onOpenWindow, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onRenderProcessGone } = useWebWiewLogic({
     onNavigationStateChange,
     onLoad,
     onError,
@@ -98,6 +99,7 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
     onLoadStart,
     onRenderProcessGoneProp,
     onMessageProp,
+    onOpenWindowProp,
     startInLoadingState,
     originWhitelist,
     onShouldStartLoadWithRequestProp,
@@ -157,7 +159,6 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
     }
   }
 
-
   const NativeWebView
     = (nativeConfig?.component as (typeof NativeWebViewAndroid | undefined)) || RNCWebView;
 
@@ -174,6 +175,7 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
     onHttpError={onHttpError}
     onRenderProcessGone={onRenderProcessGone}
     onMessage={onMessage}
+    onOpenWindow={onOpenWindow}
     onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
 
     ref={webViewRef}
