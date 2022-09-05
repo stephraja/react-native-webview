@@ -333,6 +333,7 @@ export interface AndroidNativeWebViewProps extends CommonNativeWebViewProps {
   onContentSizeChange?: (event: WebViewEvent) => void;
   onRenderProcessGone?: (event: WebViewRenderProcessGoneEvent) => void;
   onOpenWindow?: (event: WebViewOpenWindowEvent) => void;
+  hasOnOpenWindowEvent?: boolean;
   overScrollMode?: OverScrollModeType;
   saveFormDataDisabled?: boolean;
   setSupportMultipleWindows?: boolean;
