@@ -1149,7 +1149,21 @@ RCTAutoInsetsProtocol>
   WKNavigationType navigationType = navigationAction.navigationType;
   NSURLRequest *request = navigationAction.request;
   BOOL isTopFrame = [request.URL isEqual:request.mainDocumentURL];
-  
+  BOOL hasTargetFrame = navigationAction.targetFrame != nil;
+
+  if (_onOpenWindow && !hasTargetFrame) {
+    // When OnOpenWindow should be called, we want to prevent the navigation
+    // If not prevented, the `decisionHandler` is called first and after that `createWebViewWithConfiguration` is called
+    // In that order the WebView's ref would be updated with the target URL even if `createWebViewWithConfiguration` does not call `loadRequest`
+    // So the WebView's document stays on the current URL, but the WebView's ref is replaced by the target URL
+    // By preventing the navigation here, we also prevent the WebView's ref mutation
+    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+    [event addEntriesFromDictionary: @{@"targetUrl": request.URL.absoluteString}];
+    decisionHandler(WKNavigationActionPolicyCancel);
+    _onOpenWindow(event);
+    return;
+  }
+
   if (_onShouldStartLoadWithRequest) {
     NSMutableDictionary<NSString *, id> *event = [self baseEvent];
     if (request.mainDocumentURL) {
